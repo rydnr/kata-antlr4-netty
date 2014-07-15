@@ -136,4 +136,4 @@ op : OPERATOR;
 WS : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ -> skip;
 
 NUMBER: '0'..'9';
-OP: '+' | '-';
+OPERATOR: '+' | '-';
