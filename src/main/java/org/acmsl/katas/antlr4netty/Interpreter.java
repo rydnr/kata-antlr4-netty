@@ -61,7 +61,6 @@ public class Interpreter
 {
     /**
      * Creates a new instance to evaluate given operation.
-     * @param op the operation to evaluate.
      */
     public Interpreter()
     {
@@ -99,6 +98,9 @@ public class Interpreter
         return
             new InterpreterBaseVisitor<BigDecimal>()
             {
+                /**
+                 * {@inheritDoc}
+                 */
                 @Override
                 public BigDecimal visitCommand(
                     @org.antlr.v4.runtime.misc.NotNull final InterpreterParser.CommandContext ctx)
@@ -107,15 +109,22 @@ public class Interpreter
 
                     @NotNull final BigDecimal left = new BigDecimal(ctx.getChild(0).getText());
                     @NotNull final String operator = ctx.getChild(1).getText();
-                    @NotNull final BigDecimal right = new BigDecimal(ctx.getChild(2).getText());
 
                     if ("+".equals(operator))
                     {
+                        @NotNull final BigDecimal right = new BigDecimal(ctx.getChild(2).getText());
                         result = left.add(right);
+                    }
+                    else if ("-".equals(operator))
+                    {
+                        @NotNull final BigDecimal right = new BigDecimal(ctx.getChild(2).getText());
+                        result = left.subtract(right);
                     }
                     else
                     {
-                        result = null;
+                        // the operator is missing -> implicit in right operand
+                        @NotNull final BigDecimal right = new BigDecimal(ctx.getChild(1).getText());
+                        result = left.add(right);
                     }
 
                     return result;

@@ -70,4 +70,66 @@ public class InterpreterTest
         Assert.assertEquals(new BigDecimal("3"), interpreter.eval("1+2"));
         Assert.assertEquals(new BigDecimal("10"), interpreter.eval("1+9"));
     }
+
+    /**
+     * Checks whether the interpreter subtracts positive, single-digit integers, correctly.
+     */
+    @Test
+    public void interpreter_subtracts_positive_single_digit_integers()
+    {
+        @NotNull final Interpreter interpreter = new Interpreter();
+
+        Assert.assertEquals(new BigDecimal("4"), interpreter.eval("4-0"));
+        Assert.assertEquals(new BigDecimal("3"), interpreter.eval("5-2"));
+    }
+
+    /**
+     * Checks whether the interpreter sums positive, double-digit integers, correctly.
+     */
+    @Test
+    public void interpreter_sums_positive_double_digit_integers()
+    {
+        @NotNull final Interpreter interpreter = new Interpreter();
+
+        Assert.assertEquals(new BigDecimal("41"), interpreter.eval("12+29"));
+        Assert.assertEquals(new BigDecimal("102"), interpreter.eval("17+85"));
+    }
+
+    /**
+     * Checks whether the interpreter subtracts positive, double-digit integers, correctly.
+     */
+    @Test
+    public void interpreter_subtracts_positive_double_digit_integers()
+    {
+        @NotNull final Interpreter interpreter = new Interpreter();
+
+        Assert.assertEquals(new BigDecimal("19"), interpreter.eval("31-12"));
+        Assert.assertEquals(new BigDecimal("66"), interpreter.eval("85-19"));
+    }
+
+    /**
+     * Checks whether the interpreter performs negative plus positive operations correctly.
+     */
+    @Test
+    public void interpreter_performs_negative_plus_positive_integers()
+    {
+        @NotNull final Interpreter interpreter = new Interpreter();
+
+        Assert.assertEquals(new BigDecimal("29"), interpreter.eval("-13+42"));
+        Assert.assertEquals(new BigDecimal("66"), interpreter.eval("-19+85"));
+    }
+
+
+    /**
+     * Checks whether the interpreter sums real numbers correctly.
+     */
+    @Test
+    public void interpreter_sums_real_numbers()
+    {
+        @NotNull final Interpreter interpreter = new Interpreter();
+
+        Assert.assertEquals(new BigDecimal("29.0"), interpreter.eval("-13.1+42.1"));
+        Assert.assertEquals(new BigDecimal("66.1"), interpreter.eval("-19.5+85.6"));
+        Assert.assertEquals(new BigDecimal("66.1"), interpreter.eval("85.6-19.5"));
+    }
 }

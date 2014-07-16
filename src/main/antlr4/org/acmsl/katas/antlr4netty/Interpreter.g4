@@ -124,7 +124,7 @@ grammar Interpreter;
  * PARSER RULES
  *------------------------------------------------------------------*/
 
-command : exp op exp;
+command : exp op? exp;
 
 exp : NUMBER;
 op : OPERATOR;
@@ -135,5 +135,13 @@ op : OPERATOR;
 
 WS : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ -> skip;
 
-NUMBER: '0'..'9';
+NUMBER: ('-')? POSITIVE_NUMBER;
+
 OPERATOR: '+' | '-';
+
+fragment POSITIVE_NUMBER :
+    POSITIVE_INTEGER
+  | POSITIVE_REAL;
+
+fragment POSITIVE_INTEGER : ('0'..'9')+;
+fragment POSITIVE_REAL : ('0'..'9')+'.'('0'..'9')+;
