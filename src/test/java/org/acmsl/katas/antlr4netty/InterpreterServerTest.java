@@ -282,7 +282,14 @@ public class InterpreterServerTest
         protected void messageReceived(@NotNull final ChannelHandlerContext ctx, @NotNull final ByteBuf msg)
             throws Exception
         {
-            Assert.assertEquals(this.expectedResponse, "" + msg);
+            @NotNull final byte[] aux = new byte[msg.readableBytes()];
+
+            for (int index = 0; index < aux.length; index++)
+            {
+                aux[index] = msg.readByte();
+            }
+
+            Assert.assertEquals(this.expectedResponse + "\n", new String(aux, CharsetUtil.UTF_8));
         }
     }
 }

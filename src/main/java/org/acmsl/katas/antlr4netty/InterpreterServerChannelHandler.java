@@ -40,7 +40,6 @@ package org.acmsl.katas.antlr4netty;
  */
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -93,20 +92,16 @@ public class InterpreterServerChannelHandler
             aux[index] = buffer.readByte();
         }
 
-        input = new String(aux, CharsetUtil.UTF_8);
-
         ReferenceCountUtil.release(msg);
+
+        input = new String(aux, CharsetUtil.UTF_8);
 
         @NotNull final BigDecimal output = calculate(input);
 
-        ctx.writeAndFlush("" + output);
+        @NotNull final ByteBuf out = Unpooled.copiedBuffer(("" + output + "\n").getBytes(CharsetUtil.UTF_8));
 
-        System.out.println("Response: " + output);
-
-        ctx.disconnect();
-//        ctx.channel().closeFuture().sync();
+        ctx.writeAndFlush(out);
     }
-
 
     /**
      * Performs the arithmetic calculations expressed in given input,
